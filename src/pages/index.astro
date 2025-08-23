@@ -1,0 +1,38 @@
+---
+import Layout from '../components/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Card from '../components/Card.astro';
+import type { Post, MicroCMSList } from '../lib/types';
+import { cmsFetch } from '../lib/microcms';
+
+const posts: MicroCMSList<Post> = await cmsFetch('/posts', { limit: 20, orders: '-id' });
+---
+<Layout title="Ride Born">
+  <Header />
+  <main class="main">
+    <section class="hero">
+      <div class="hero-image">
+        <img src="/images/hero-car.jpg" alt="Classic Chevrolet Impala" />
+      </div>
+      <div class="hero-content">
+        <h1 data-text="RIDE BORN">RIDE BORN</h1>
+        <p>Classic car community & interviews</p>
+      </div>
+    </section>
+
+    <section class="gallery">
+      <div class="gallery-header">
+        <h2>Gallery</h2>
+        <div class="gallery-controls">
+          <button class="shuffle-btn" data-shuffle>Shuffle</button>
+          <button class="reset-btn" data-sort-reset>Reset Order</button>
+        </div>
+      </div>
+      <div class="gallery-grid" data-sortable-container>
+        {posts.contents.map(post => <Card post={post} />)}
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

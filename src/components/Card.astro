@@ -1,0 +1,21 @@
+---
+import type { Post } from '../lib/types';
+import OptimizedImage from './OptimizedImage.astro';
+const { post } = Astro.props as { post: Post };
+
+const img = post.thumbnail?.url ?? 'https://picsum.photos/400/400?blur=1';
+---
+<article class="card" data-card data-post-id={post.id}>
+  <a href={`/posts/${post.slug}`} class="card-link">
+    <OptimizedImage 
+      src={img}
+      alt={post.title}
+      size="card"
+    />
+  </a>
+  <div class="drag-handle" data-drag-handle>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+    </svg>
+  </div>
+</article>

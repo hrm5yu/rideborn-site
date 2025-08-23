@@ -1,0 +1,49 @@
+---
+import { optimizeImage, generateSrcset, IMAGE_SIZES, RESPONSIVE_SIZES } from '../lib/image-utils';
+
+interface Props {
+  src: string;
+  alt: string;
+  size?: keyof typeof IMAGE_SIZES;
+  customSizes?: string;
+  className?: string;
+  loading?: 'lazy' | 'eager';
+  decoding?: 'async' | 'sync' | 'auto';
+}
+
+const { 
+  src, 
+  alt, 
+  size = 'card', 
+  customSizes,
+  className = '',
+  loading = 'lazy',
+  decoding = 'async'
+} = Astro.props;
+
+const optimizedSrc = optimizeImage(src, IMAGE_SIZES[size]);
+const srcset = generateSrcset(src, RESPONSIVE_SIZES);
+
+// Default sizes based on image type
+const defaultSizes = {
+  thumbnail: '(max-width: 768px) 100vw, 400px',
+  card: '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw',
+  hero: '(max-width: 768px) 100vw, 1200px',
+  article: '(max-width: 768px) 100vw, 800px',
+  gallery: '(max-width: 768px) 100vw, 300px',
+};
+
+const sizes = customSizes || defaultSizes[size];
+---
+
+<img 
+  src={optimizedSrc}
+  srcset={srcset}
+  sizes={sizes}
+  alt={alt}
+  class={className}
+  loading={loading}
+  decoding={decoding}
+  onload="this.style.opacity='1'"
+  style="opacity: 0; transition: opacity 0.3s ease;"
+/>

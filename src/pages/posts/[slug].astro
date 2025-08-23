@@ -1,0 +1,68 @@
+---
+import Layout from '../../components/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import type { Post, MicroCMSList } from '../../lib/types';
+import { cmsFetch } from '../../lib/microcms';
+import OptimizedImage from '../../components/OptimizedImage.astro';
+
+export async function getStaticPaths() {
+  try {
+    const list: MicroCMSList<Post> = await cmsFetch('/posts', { limit: 100, orders: '-id' });
+    return list.contents.map(p => ({
+      params: { slug: p.slug },
+      props: { id: p.id }
+    }));
+  } catch (error) {
+    console.error('Error fetching posts for static paths:', error);
+    return [];
+  }
+}
+
+const { slug } = Astro.params;
+let post: Post;
+try {
+  const list: MicroCMSList<Post> = await cmsFetch('/posts', { limit: 1, filters: `slug[equals]${slug}` });
+  if (!list.contents.length) {
+    return Astro.redirect('/404');
+  }
+  post = list.contents[0];
+} catch (error) {
+  console.error('Error fetching post:', error);
+  return Astro.redirect('/404');
+}
+const img = post!.thumbnail?.url ?? '';
+---
+<Layout title={post.title}>
+  <Header />
+  <main class="rb-main" data-page-transitions>
+    <div class="back-nav">
+      <a href="/" class="back-btn">
+        <span class="back-icon">←</span>
+        <span class="back-text">Back to Home</span>
+      </a>
+    </div>
+    <article class="rb-article" data-reveal>
+      <header class="rb-article__head">
+        <h1 class="rb-article__title">{post.title}</h1>
+      </header>
+      <div class="rb-article__content">
+        {img && (
+          <figure class="rb-article__hero">
+            <OptimizedImage 
+              src={img}
+              alt={post.title}
+              size="article"
+              className="rb-img"
+            />
+          </figure>
+        )}
+        <div class="rb-article__body">
+          <!-- body は microCMS のリッチエディタ (HTML) を想定 -->
+          <Fragment set:html={post.body ?? ''} />
+        </div>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Layout>

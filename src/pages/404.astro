@@ -1,0 +1,107 @@
+---
+import Layout from '../components/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="404 - Page Not Found">
+  <Header />
+  <main class="rb-main">
+    <div class="error-page">
+      <div class="error-content">
+        <h1 class="error-title">404</h1>
+        <h2 class="error-subtitle">PAGE NOT FOUND</h2>
+        <p class="error-message">The page you're looking for doesn't exist.</p>
+        <a href="/" class="error-link">Back to Home</a>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .error-page {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .error-content {
+    max-width: 600px;
+  }
+
+  .error-title {
+    font-family: "Courier New", "Monaco", monospace;
+    font-size: 8rem;
+    font-weight: bold;
+    color: #00ff41;
+    text-shadow: 
+      0 0 10px #00ff41,
+      0 0 20px #00ff41,
+      0 0 30px #00ff41;
+    margin: 0;
+    animation: neon-flicker 2s ease-in-out infinite alternate;
+  }
+
+  .error-subtitle {
+    font-family: "Courier New", "Monaco", monospace;
+    font-size: 1.5rem;
+    color: #00ff41;
+    margin: 1rem 0;
+    letter-spacing: 3px;
+  }
+
+  .error-message {
+    font-family: "Courier New", "Monaco", monospace;
+    font-size: 1rem;
+    color: #00ff41;
+    opacity: 0.8;
+    margin: 2rem 0;
+  }
+
+  .error-link {
+    display: inline-block;
+    font-family: "Courier New", "Monaco", monospace;
+    font-size: 1rem;
+    color: #00ff41;
+    text-decoration: none;
+    border: 2px solid #00ff41;
+    padding: 12px 24px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+  }
+
+  .error-link:hover {
+    background: #00ff41;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.6);
+  }
+
+  @keyframes neon-flicker {
+    0%, 100% { 
+      text-shadow: 
+        0 0 10px #00ff41,
+        0 0 20px #00ff41,
+        0 0 30px #00ff41;
+    }
+    50% { 
+      text-shadow: 
+        0 0 5px #00ff41,
+        0 0 10px #00ff41,
+        0 0 15px #00ff41;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .error-title {
+      font-size: 4rem;
+    }
+    
+    .error-subtitle {
+      font-size: 1.2rem;
+    }
+  }
+</style>

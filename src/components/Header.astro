@@ -1,0 +1,49 @@
+---
+---
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <a href="/" class="logo-link">
+        <span class="logo-text">RIDE BORN</span>
+      </a>
+    </div>
+    <nav class="nav">
+      <a href="/" class="nav-link">HOME</a>
+      <a href="/contact" class="nav-link">CONTACT</a>
+    </nav>
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+  <nav class="nav-mobile" id="mobileNav">
+    <a href="/" class="nav-link">HOME</a>
+    <a href="/contact" class="nav-link">CONTACT</a>
+  </nav>
+</header>
+
+<script>
+  // Mobile menu toggle and active page highlighting
+  document.addEventListener('DOMContentLoaded', () => {
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    
+    if (mobileMenuBtn && mobileNav) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileNav.classList.toggle('active');
+        mobileMenuBtn.classList.toggle('active');
+      });
+    }
+    
+    // Set active page
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+      if (link.getAttribute('href') === currentPath) {
+        link.classList.add('active');
+      }
+    });
+  });
+</script>

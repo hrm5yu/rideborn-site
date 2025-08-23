@@ -1,0 +1,463 @@
+---
+// Ultimate Cyberpunk Preloader with GSAP
+---
+
+<div id="preloader" class="preloader">
+  <!-- Matrix Rain Background -->
+  <div id="matrix-rain"></div>
+  
+  <!-- Particle Container -->
+  <div id="particles-container"></div>
+  
+  <!-- Main Content -->
+  <div class="countdown-container">
+    <div class="countdown-text">
+      <span class="current-year" id="current-year">2025</span>
+      <span class="arrow" id="arrow">→</span>
+      <span class="target-year" id="target-year">1960</span>
+    </div>
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+        <div class="progress-glow"></div>
+      </div>
+      <div class="progress-text">
+        <span class="progress-percentage" id="progress-percentage">0%</span>
+        <span class="progress-status" id="progress-status">INITIALIZING...</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Glitch Overlay -->
+  <div class="glitch-overlay"></div>
+  
+  <!-- Scan Lines -->
+  <div class="scan-lines"></div>
+</div>
+
+<style>
+  .preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+    overflow: hidden;
+  }
+
+  #matrix-rain {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  #particles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .countdown-container {
+    text-align: center;
+    position: relative;
+    z-index: 3;
+  }
+
+  .countdown-text {
+    font-size: 4rem;
+    color: #00ffff;
+    text-shadow: 
+      0 0 20px #00ffff,
+      0 0 40px #00ffff,
+      2px 0 0 #ff00ff,
+      -2px 0 0 #ff00ff;
+    margin-bottom: 2rem;
+    font-weight: bold;
+    letter-spacing: 4px;
+  }
+
+  .current-year {
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    position: relative;
+  }
+
+  .arrow {
+    margin: 0 1rem;
+    color: #ff00ff;
+    text-shadow: 
+      0 0 15px #ff00ff,
+      0 0 30px #ff00ff;
+  }
+
+  .target-year {
+    opacity: 0.7;
+    position: relative;
+  }
+
+  .progress-container {
+    width: 400px;
+    margin: 0 auto;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #00ffff;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    box-shadow: 
+      0 0 15px rgba(0, 255, 255, 0.5),
+      inset 0 0 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ffff, #00ffff, #ff00ff);
+    width: 0%;
+    transition: width 0.3s ease;
+    box-shadow: 
+      0 0 15px rgba(0, 255, 255, 0.8),
+      0 0 30px rgba(0, 255, 255, 0.4);
+    position: relative;
+    z-index: 1;
+  }
+
+  .progress-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    animation: glow-sweep 2s linear infinite;
+  }
+
+  .progress-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    color: #00ffff;
+    text-shadow: 0 0 8px #00ffff;
+  }
+
+  .glitch-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255, 0, 255, 0.05) 2px,
+        rgba(255, 0, 255, 0.05) 4px
+      );
+    animation: glitch-scan 0.1s linear infinite;
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  .scan-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 1px,
+        rgba(0, 255, 255, 0.03) 1px,
+        rgba(0, 255, 255, 0.03) 2px
+      );
+    animation: scan-move 0.05s linear infinite;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  @keyframes glow-sweep {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  @keyframes glitch-scan {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
+  }
+
+  @keyframes scan-move {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(2px); }
+  }
+
+  /* Hide preloader when loaded */
+  .preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s ease, visibility 1s ease;
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .countdown-text {
+      font-size: 3rem;
+    }
+    
+    .progress-container {
+      width: 300px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .countdown-text {
+      font-size: 2.5rem;
+    }
+    
+    .progress-container {
+      width: 250px;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const preloader = document.getElementById('preloader') as HTMLElement;
+    const currentYearElement = document.getElementById('current-year') as HTMLElement;
+    const progressFill = document.getElementById('progress-fill') as HTMLElement;
+    const progressPercentage = document.getElementById('progress-percentage') as HTMLElement;
+    const progressStatus = document.getElementById('progress-status') as HTMLElement;
+    const arrow = document.getElementById('arrow') as HTMLElement;
+    
+    if (!preloader || !currentYearElement || !progressFill) return;
+    
+    // Check if preloader is disabled
+    const disablePreloader = localStorage.getItem('disablePreloader') === 'true';
+    if (disablePreloader) {
+      preloader.style.display = 'none';
+      return;
+    }
+    
+    // Check if this is the first visit
+    const hasVisited = sessionStorage.getItem('hasVisited');
+    
+    if (hasVisited) {
+      preloader.style.display = 'none';
+      preloader.style.visibility = 'hidden';
+      preloader.style.opacity = '0';
+      return;
+    }
+    
+    sessionStorage.setItem('hasVisited', 'true');
+    
+    // Initialize Matrix Rain
+    initMatrixRain();
+    
+    // Initialize Particle System
+    initParticles();
+    
+    // Initialize GSAP Animations
+    initGSAPAnimations();
+    
+    // Start Countdown
+    startCountdown();
+    
+    function initMatrixRain() {
+      const container = document.getElementById('matrix-rain');
+      if (!container) return;
+      
+      const matrixChars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+      
+      // Create matrix rain columns
+      for (let i = 0; i < 50; i++) {
+        const column = document.createElement('div');
+        column.style.position = 'absolute';
+        column.style.left = (i * 2) + '%';
+        column.style.top = '-100%';
+        column.style.color = '#00ffff';
+        column.style.fontSize = '1.2rem';
+        column.style.fontFamily = 'monospace';
+        column.style.textShadow = '0 0 5px #00ffff';
+        column.style.whiteSpace = 'pre';
+        column.style.lineHeight = '1.2';
+        column.style.pointerEvents = 'none';
+        
+        // Generate random characters
+        let chars = '';
+        for (let j = 0; j < 20; j++) {
+          chars += matrixChars[Math.floor(Math.random() * matrixChars.length)] + '\n';
+        }
+        column.textContent = chars;
+        
+        container.appendChild(column);
+        
+        // Animate with GSAP
+        gsap.to(column, {
+          top: '100%',
+          duration: Math.random() * 3 + 2,
+          repeat: -1,
+          delay: Math.random() * 2,
+          ease: 'none'
+        });
+      }
+    }
+    
+    function initParticles() {
+      const container = document.getElementById('particles-container');
+      if (!container) return;
+      
+      // Create floating particles
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.style.position = 'absolute';
+        particle.style.width = '2px';
+        particle.style.height = '2px';
+        particle.style.background = Math.random() > 0.5 ? '#00ffff' : '#ff00ff';
+        particle.style.borderRadius = '50%';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.boxShadow = `0 0 10px ${Math.random() > 0.5 ? '#00ffff' : '#ff00ff'}`;
+        particle.style.pointerEvents = 'none';
+        
+        container.appendChild(particle);
+        
+        // Animate with GSAP
+        gsap.to(particle, {
+          y: -100,
+          opacity: 0,
+          duration: Math.random() * 3 + 2,
+          repeat: -1,
+          delay: Math.random() * 2,
+          ease: 'power1.out'
+        });
+      }
+    }
+    
+    function initGSAPAnimations() {
+      // Text glitch effect
+      gsap.to('.countdown-text', {
+        textShadow: '2px 0 0 #ff00ff, -2px 0 0 #00ffff',
+        duration: 0.1,
+        repeat: -1,
+        yoyo: true,
+        ease: 'power1.inOut'
+      });
+      
+      // Arrow pulse
+      gsap.to(arrow, {
+        scale: 1.2,
+        duration: 1,
+        repeat: -1,
+        yoyo: true,
+        ease: 'power1.inOut'
+      });
+      
+      // Progress glow
+      gsap.to('.progress-fill', {
+        boxShadow: '0 0 30px rgba(0, 255, 255, 1)',
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: 'power1.inOut'
+      });
+    }
+    
+    function startCountdown() {
+      const currentYear = new Date().getFullYear();
+      const targetYear = 1960;
+      const totalYears = currentYear - targetYear;
+      
+      currentYearElement.textContent = currentYear.toString();
+      
+      // Loading steps
+      const loadingSteps = [
+        { percent: 20, status: 'INITIALIZING MATRIX...' },
+        { percent: 40, status: 'LOADING NEURAL NETWORKS...' },
+        { percent: 60, status: 'CALIBRATING TIME STREAM...' },
+        { percent: 80, status: 'SYNCHRONIZING DIMENSIONS...' },
+        { percent: 100, status: 'SYSTEM READY...' }
+      ];
+      
+      let currentStep = 0;
+      
+      function updateProgress() {
+        if (currentStep < loadingSteps.length) {
+          const step = loadingSteps[currentStep];
+          
+          // Animate progress bar
+          gsap.to(progressFill, {
+            width: step.percent + '%',
+            duration: 1,
+            ease: 'power2.out'
+          });
+          
+          // Animate percentage
+          gsap.to(progressPercentage, {
+            textContent: step.percent + '%',
+            duration: 0.5,
+            snap: { textContent: 1 }
+          });
+          
+          // Animate status
+          gsap.to(progressStatus, {
+            textContent: step.status,
+            duration: 0.3
+          });
+          
+          // Animate year countdown
+          const yearStep = Math.floor((step.percent / 100) * totalYears);
+          const currentYearValue = Math.max(targetYear, currentYear - yearStep);
+          
+          gsap.to(currentYearElement, {
+            textContent: currentYearValue.toString(),
+            duration: 0.5,
+            snap: { textContent: 1 }
+          });
+          
+          currentStep++;
+          
+          if (currentStep < loadingSteps.length) {
+            setTimeout(updateProgress, 1500);
+          } else {
+            // Countdown complete
+            setTimeout(() => {
+              gsap.to(preloader, {
+                opacity: 0,
+                duration: 1,
+                ease: 'power2.inOut',
+                onComplete: () => {
+                  preloader.style.display = 'none';
+                }
+              });
+            }, 2000);
+          }
+        }
+      }
+      
+      // Start after a delay
+      setTimeout(updateProgress, 1000);
+    }
+  });
+</script>
