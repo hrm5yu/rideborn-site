@@ -1,20 +1,19 @@
 ---
 import Layout from '../components/Layout.astro';
+import Header from '../components/Header.astro';
 ---
 
 <Layout title="Contact - RIDE BORN">
+  <Header />
   <main class="contact-main">
     <div class="contact-container">
-      <div class="back-nav">
-        <a href="/rideborn-site/" class="back-btn">
-          <span class="back-icon">←</span>
-          <span class="back-text">Back to Home</span>
-        </a>
-      </div>
+
       <div class="contact-header">
         <h1 class="contact-title" data-text="CONTACT">CONTACT</h1>
         <p class="contact-subtitle">Get in touch with us</p>
       </div>
+
+      
 
       <div class="contact-content">
         <div class="contact-info">
@@ -135,36 +134,36 @@ import Layout from '../components/Layout.astro';
   // Contact form handling
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('contactForm');
-    
-    if (form) {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        // Get form data
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-        
-        // Simulate form submission
-        const submitBtn = form.querySelector('.submit-btn');
-        const originalText = submitBtn.querySelector('.btn-text').textContent;
-        
-        submitBtn.querySelector('.btn-text').textContent = 'Sending...';
-        submitBtn.disabled = true;
-        
-        // Simulate API call
-        setTimeout(() => {
-          // Show success message
-          showNotification('Message sent successfully!', 'success');
-          
-          // Reset form
-          form.reset();
-          
-          // Reset button
-          submitBtn.querySelector('.btn-text').textContent = originalText;
-          submitBtn.disabled = false;
-        }, 2000);
-      });
-    }
+    if (!(form instanceof HTMLFormElement)) return;
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // Get form data safely
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      // Simulate form submission
+      const submitBtn = form.querySelector('.submit-btn');
+      const btnText = submitBtn && submitBtn.querySelector('.btn-text');
+      const originalText = btnText && btnText.textContent ? btnText.textContent : 'Send Message';
+
+      if (btnText) btnText.textContent = 'Sending...';
+      if (submitBtn instanceof HTMLButtonElement) submitBtn.disabled = true;
+
+      // Simulate API call
+      setTimeout(() => {
+        // Show success message
+        showNotification('Message sent successfully!', 'success');
+
+        // Reset form
+        form.reset();
+
+        // Reset button
+        if (btnText) btnText.textContent = originalText;
+        if (submitBtn instanceof HTMLButtonElement) submitBtn.disabled = false;
+      }, 2000);
+    });
   });
 
   // Notification system
@@ -175,17 +174,276 @@ import Layout from '../components/Layout.astro';
       <span class="notification-text">${message}</span>
       <button class="notification-close">×</button>
     `;
-    
+
     document.body.appendChild(notification);
-    
+
     // Auto remove after 5 seconds
-    setTimeout(() => {
+    const timerId = setTimeout(() => {
       notification.remove();
     }, 5000);
-    
+
     // Close button
-    notification.querySelector('.notification-close').addEventListener('click', () => {
-      notification.remove();
-    });
+    const closeBtn = notification.querySelector('.notification-close');
+    if (closeBtn instanceof HTMLButtonElement) {
+      closeBtn.addEventListener('click', () => {
+        clearTimeout(timerId);
+        notification.remove();
+      });
+    }
   }
 </script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700&display=swap');
+
+  .contact-main {
+    font-family: "Noto Sans JP", "Anton", sans-serif;
+    background: 
+      /* 雑誌風のグラデーション */
+      linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 25%, #1a1a1a 50%, #2d2d2d 75%, #1a1a1a 100%),
+      /* 微細なパターン */
+      radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+    background-size: 100% 100%, 300px 300px, 400px 400px, 200px 200px;
+    background-attachment: fixed;
+    color: #ffffff;
+    min-height: 100vh;
+  }
+
+  .contact-title {
+    font-family: "Noto Sans JP", sans-serif;
+    letter-spacing: 0.15em;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .contact-subtitle {
+    color: #cccccc;
+  }
+
+  .contact-container {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 40px;
+    margin: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .contact-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    margin-bottom: 40px;
+  }
+
+  .info-title {
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--baby-red);
+    padding-bottom: 10px;
+  }
+
+  .info-item {
+    margin-bottom: 15px;
+    color: #cccccc;
+  }
+
+  .info-label {
+    font-weight: bold;
+    color: #ffffff;
+    margin-right: 10px;
+  }
+
+  .info-link {
+    color: var(--baby-red);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .info-link:hover {
+    color: #ffffff;
+  }
+
+  .social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    text-decoration: none;
+    color: #cccccc;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .social-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    transform: translateX(5px);
+  }
+
+  .social-icon {
+    font-size: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 25px;
+  }
+
+  .form-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #ffffff;
+    font-weight: bold;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    width: 100%;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+
+  .form-input::placeholder,
+  .form-textarea::placeholder {
+    color: #999999;
+  }
+
+  .form-input:focus,
+  .form-select:focus,
+  .form-textarea:focus {
+    outline: none;
+    border-color: var(--baby-red);
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .submit-btn {
+    background: linear-gradient(135deg, var(--baby-red), #c0392b);
+    color: #ffffff;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(230, 57, 70, 0.4);
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .contact-footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .response-time h3,
+  .business-hours h3 {
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+
+  .response-time p,
+  .business-hours p {
+    color: #cccccc;
+  }
+
+  .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    color: #ffffff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 1000;
+    animation: slideIn 0.3s ease;
+  }
+
+  .notification-success {
+    border-color: #27ae60;
+  }
+
+  .notification-close {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .contact-content {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .contact-footer {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .contact-container {
+      margin: 10px;
+      padding: 20px;
+    }
+  }
+</style>

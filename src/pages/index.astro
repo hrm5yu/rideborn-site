@@ -11,28 +11,60 @@ const posts: MicroCMSList<Post> = await cmsFetch('/posts', { limit: 20, orders: 
 <Layout title="Ride Born">
   <Header />
   <main class="main">
-    <section class="hero">
-      <div class="hero-image">
-        <img src="/rideborn-site/images/hero-car.jpg" alt="Classic Chevrolet Impala" />
-      </div>
-      <div class="hero-content">
-        <h1 data-text="RIDE BORN">RIDE BORN</h1>
-        <p>Classic car community & interviews</p>
+                    <!-- ファーストビュー - 画面一面のヒーロー -->
+                <section class="hero-fullscreen">
+                  <div class="hero-image">
+                    <img src="/rideborn-site/images/hero-car.jpg" alt="Classic Chevrolet Impala" />
+                  </div>
+                  <div class="hero-logo-bottom">
+                    <div class="logo-text-container">
+                      <span class="logo-char" data-char="R">R</span>
+                      <span class="logo-char" data-char="I">I</span>
+                      <span class="logo-char" data-char="D">D</span>
+                      <span class="logo-char" data-char="E">E</span>
+                      <span class="logo-char" data-char=" ">&nbsp;</span>
+                      <span class="logo-char" data-char="B">B</span>
+                      <span class="logo-char" data-char="O">O</span>
+                      <span class="logo-char" data-char="R">R</span>
+                      <span class="logo-char" data-char="N">N</span>
+                    </div>
+                    <div class="logo-subtitle">
+                      <div class="subtitle-line">旧車と共に、もう一度熱狂を生きる</div>
+                    </div>
+                  </div>
+                </section>
+
+
+
+    <!-- Concept Section -->
+    <section class="concept-section">
+      <div class="concept-container">
+        <div class="concept-header">
+          <h2 class="concept-title">ABOUT RIDEBORN</h2>
+        </div>
+        
+        <div class="concept-content">
+          <div class="concept-mission">
+            <div class="concept-icon">🎯</div>
+            <div class="concept-text">
+              <h3 class="concept-subtitle">MISSION</h3>
+              <p class="concept-description">旧車の物語と魅力を伝え、若い世代にクルマを持つ喜びを再発見させる</p>
+            </div>
+          </div>
+          
+          <div class="concept-vision">
+            <div class="concept-icon">🌟</div>
+            <div class="concept-text">
+              <h3 class="concept-subtitle">VISION</h3>
+              <p class="concept-description">日本の若者が旧車を愛し、熱狂し、自らの手でその文化を未来へつなぐ社会をつくる</p>
+            </div>
+          </div>
+        </div>
+        
+
       </div>
     </section>
 
-    <section class="gallery">
-      <div class="gallery-header">
-        <h2>Gallery</h2>
-        <div class="gallery-controls">
-          <button class="shuffle-btn" data-shuffle>Shuffle</button>
-          <button class="reset-btn" data-sort-reset>Reset Order</button>
-        </div>
-      </div>
-      <div class="gallery-grid" data-sortable-container>
-        {posts.contents.map(post => <Card post={post} />)}
-      </div>
-    </section>
   </main>
   <Footer />
 </Layout>
