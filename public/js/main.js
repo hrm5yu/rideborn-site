@@ -1,18 +1,27 @@
 // GSAP横スクロール機能
 (() => {
-  const initGSAPHorizontalScroll = () => {
-    // GSAPが利用可能かチェック
-    if (typeof window.gsap === 'undefined') {
-      console.warn('GSAP not available, using fallback');
-      initFallbackScroll();
-      return;
+  const initGSAPHorizontalScroll = async () => {
+    let gsap, ScrollTrigger;
+    
+    // 本番環境ではwindow.gsapを使用、開発環境では動的importを使用
+    if (typeof window.gsap !== 'undefined') {
+      gsap = window.gsap;
+      ScrollTrigger = window.ScrollTrigger;
+    } else {
+      try {
+        // 開発環境用の動的import
+        const mod = await import('https://esm.sh/gsap@3.12.5');
+        gsap = mod.gsap || mod.default || mod;
+        ScrollTrigger = mod.ScrollTrigger || mod.default?.ScrollTrigger;
+      } catch (error) {
+        console.warn('GSAP failed to load, using fallback');
+        initFallbackScroll();
+        return;
+      }
     }
     
-    const gsap = window.gsap;
-    const ScrollTrigger = window.ScrollTrigger;
-    
-    if (!ScrollTrigger) {
-      console.warn('ScrollTrigger not available, using fallback');
+    if (!gsap || !ScrollTrigger) {
+      console.warn('GSAP or ScrollTrigger not available, using fallback');
       initFallbackScroll();
       return;
     }
@@ -564,9 +573,49 @@
   const logoTitleContainer = document.querySelector('.logo-text-container');
 
   if (logoChars.length > 0) {
-    // GSAPが利用可能な場合はGSAPを使用
-    if (typeof window !== 'undefined' && typeof window.gsap !== 'undefined') {
-      const gsap = window.gsap;
+    // GSAPアニメーションを初期化
+    const initLogoAnimation = async () => {
+      let gsap;
+      
+      // 本番環境ではwindow.gsapを使用、開発環境では動的importを使用
+      if (typeof window.gsap !== 'undefined') {
+        gsap = window.gsap;
+      } else {
+        try {
+          // 開発環境用の動的import
+          const mod = await import('https://esm.sh/gsap@3.12.5');
+          gsap = mod.gsap || mod.default || mod;
+        } catch (error) {
+          console.warn('GSAP failed to load for logo animation, using fallback');
+          // フォールバック: CSSクラスで簡易アニメーション
+          logoChars.forEach((char, index) => {
+            setTimeout(() => {
+              char.classList.add('animate');
+            }, 500 + (index * 100));
+          });
+          if (logoSubtitle) {
+            setTimeout(() => {
+              logoSubtitle.classList.add('animate');
+            }, 1500);
+          }
+          return;
+        }
+      }
+      
+      if (!gsap) {
+        // フォールバック: CSSクラスで簡易アニメーション
+        logoChars.forEach((char, index) => {
+          setTimeout(() => {
+            char.classList.add('animate');
+          }, 500 + (index * 100));
+        });
+        if (logoSubtitle) {
+          setTimeout(() => {
+            logoSubtitle.classList.add('animate');
+          }, 1500);
+        }
+        return;
+      }
 
       // 統一されたアニメーションシーケンス
       const tl = gsap.timeline();
@@ -653,19 +702,10 @@
           }
         }, 1500); // アニメーション完了後1.5秒待機
       });
-    } else {
-      // フォールバック: CSSクラスで簡易アニメーション
-      logoChars.forEach((char, index) => {
-        setTimeout(() => {
-          char.classList.add('animate');
-        }, 500 + (index * 100));
-      });
-      if (logoSubtitle) {
-        setTimeout(() => {
-          logoSubtitle.classList.add('animate');
-        }, 1500);
-      }
-    }
+    };
+    
+    // ロゴアニメーションを初期化
+    initLogoAnimation();
   }
 })();
 
