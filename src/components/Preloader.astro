@@ -267,19 +267,16 @@
     
     // Check if this is the first visit
     const hasVisited = sessionStorage.getItem('hasVisited');
-    const navigationEntry = performance.getEntriesByType('navigation')[0];
-    const isPageNavigation = navigationEntry && (
-      navigationEntry.type === 'navigate' || 
-      navigationEntry.type === 'reload' ||
-      document.referrer !== '' // 他のページから来た場合
-    );
+    console.log('Preloader check:', { hasVisited, disablePreloader });
     
     // 初回訪問でない場合は何もしない
-    if (hasVisited || isPageNavigation) {
+    if (hasVisited) {
+      console.log('Preloader: Already visited, skipping');
       return;
     }
     
     // 初回訪問のみプリロード画面を表示
+    console.log('Preloader: First visit, showing preloader');
     preloader.classList.add('show');
     sessionStorage.setItem('hasVisited', 'true');
     
