@@ -11,9 +11,12 @@ let errorMessage = '';
 
 try {
   // /museumエンドポイントからデータを取得
-  museumItems = await cmsFetch('/museum');
-  console.log('Museum API response:', museumItems);
-  console.log('Successfully fetched museum items:', museumItems?.length || 0);
+  const response = await cmsFetch('/museum');
+  console.log('Museum API response:', response);
+  
+  // microCMSのレスポンス構造に合わせてcontentsを取得
+  museumItems = response.contents || [];
+  console.log('Successfully fetched museum items:', museumItems.length);
 } catch (error) {
   console.error('microCMS fetch error:', error);
   errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -49,7 +52,7 @@ try {
             <div class="debug-info">
               <p><strong>デバッグ情報:</strong></p>
               <p>Museum データ数: {museumItems?.length || 0}</p>
-              <p>Museum レスポンス構造: {JSON.stringify(museumItems, null, 2)}</p>
+              <p>取得したデータ: {museumItems.length > 0 ? '成功' : '失敗'}</p>
             </div>
           </div>
         )}
