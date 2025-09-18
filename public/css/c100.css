@@ -305,6 +305,7 @@ body::before {
 .museum-page .gallery-header {
   top: 0; /* ナビゲーションバーと完全に接続 */
   margin-top: 0;
+  padding: 0; /* MUSEUMページでは上下のpaddingを削除 */
 }
 
 /* Hero section */
@@ -915,7 +916,7 @@ body::before {
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
   width: 100%;
-  min-height: 100vh;
+  /* min-height: 100vh; を削除してコンテンツに応じた高さに */
   /* グリッドアイテムの並べ替えを改善 */
   grid-auto-flow: dense;
   align-items: start;
@@ -935,6 +936,7 @@ body::before {
   -webkit-user-drag: element;
   will-change: transform;
   box-shadow: 0 0 15px rgba(70, 91, 84, 0.3);
+  aspect-ratio: 1; /* 正方形のアスペクト比を強制 */
 }
 
 .card:hover {
@@ -2338,7 +2340,7 @@ body::before {
 /* Responsive */
 @media (max-width: 768px) {
   .gallery-header {
-    padding: 15px 16px;
+    padding: 0; /* スマホでは上下のpaddingを削除 */
     top: 96px;
   }
   
@@ -2370,7 +2372,7 @@ body::before {
 
 @media (max-width: 480px) {
   .gallery-header {
-    padding: 10px 12px;
+    padding: 0; /* 小さなスマホでも上下のpaddingを削除 */
     top: 96px;
   }
   
@@ -2381,6 +2383,10 @@ body::before {
   .gallery-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 0; /* スマホでは行間スペースを完全に削除 */
+  }
+  
+  .card {
+    aspect-ratio: 1; /* スマホでも正方形を維持 */
   }
   
   .hero {
@@ -2426,6 +2432,7 @@ body::before {
   
   .card {
     border-width: 1px; /* ボーダーを細く */
+    aspect-ratio: 1; /* 非常に小さな画面でも正方形を維持 */
   }
   
 }
