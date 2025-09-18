@@ -260,16 +260,24 @@
       return;
     }
     
-    // Check if this is the first visit
+    // Check if this is the first visit or page navigation
     const hasVisited = sessionStorage.getItem('hasVisited');
+    const navigationEntry = performance.getEntriesByType('navigation')[0];
+    const isPageNavigation = navigationEntry && (
+      navigationEntry.type === 'navigate' || 
+      navigationEntry.type === 'reload' ||
+      document.referrer !== '' // 他のページから来た場合
+    );
     
-    if (hasVisited) {
+    // ページ間移動の場合は表示しない
+    if (hasVisited || isPageNavigation) {
       preloader.style.display = 'none';
       preloader.style.visibility = 'hidden';
       preloader.style.opacity = '0';
       return;
     }
     
+    // 初回訪問のみマーク
     sessionStorage.setItem('hasVisited', 'true');
     
     // Initialize Matrix Rain
