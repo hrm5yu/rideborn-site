@@ -108,9 +108,30 @@
               behavior: 'smooth'
             });
           }
+        } else {
+          // 他のページからTOPページに移動する場合、ページ読み込み後にスクロール
+          e.preventDefault();
+          window.location.href = '/rideborn-site/#mission';
         }
-        // 他のページからは通常のリンクとして動作（何もしない）
       });
     });
+    
+    // ページ読み込み時にアンカーリンクを処理
+    if (window.location.hash === '#mission') {
+      setTimeout(() => {
+        const missionSection = document.getElementById('mission');
+        if (missionSection) {
+          const headerHeight = document.querySelector('.header').offsetHeight;
+          const elementPosition = missionSection.offsetTop;
+          const offsetPosition = elementPosition - headerHeight - 20; // ヘッダー高さ + 20px余白
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 100); // ページ読み込み完了を待つ
+    }
   });
 </script>
+
