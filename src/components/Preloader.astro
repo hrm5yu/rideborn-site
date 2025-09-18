@@ -70,11 +70,11 @@
     // Check if this is the first visit
     const hasVisited = sessionStorage.getItem('hasVisited');
     
-    // 初回訪問でない場合はメインコンテンツを表示
+    // 初回訪問でない場合はアニメーションなしで即座に表示
     if (hasVisited) {
       const mainContent = document.querySelector('.main-content');
       if (mainContent) {
-        mainContent.classList.add('fade-in');
+        mainContent.classList.add('no-animation');
       }
       return;
     }

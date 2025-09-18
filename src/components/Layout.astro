@@ -14,7 +14,7 @@ const { title = 'Ride Born', description = 'Japan\'s classic car community & int
     <link href="https://fonts.googleapis.com/css2?family=Anton:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/rideborn-site/css/c100.css" />
     <style>
-      /* メインコンテンツの浮かび上がりアニメーション */
+      /* メインコンテンツの浮かび上がりアニメーション（初回訪問時のみ） */
       .main-content {
         opacity: 0;
         transform: translateY(50px);
@@ -24,6 +24,13 @@ const { title = 'Ride Born', description = 'Japan\'s classic car community & int
       .main-content.fade-in {
         opacity: 1;
         transform: translateY(0);
+      }
+      
+      /* 初回訪問でない場合は即座に表示 */
+      .main-content.no-animation {
+        opacity: 1;
+        transform: translateY(0);
+        transition: none;
       }
       
       /* ヘッダーが常に最前面に表示されるように */
