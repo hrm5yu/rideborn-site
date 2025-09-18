@@ -144,9 +144,9 @@
           const elapsed = Date.now() - startTime - initialPause;
           const progress = elapsed / (totalDuration - initialPause);
           
-          // 最初はゆっくり、だんだん速く（指数関数的に加速）
-          const baseDelay = 150;
-          const currentDelay = Math.max(15, baseDelay * Math.pow(0.2, progress));
+          // 最初はゆっくり、だんだん速く（指数関数的に加速）- 1.5倍速
+          const baseDelay = 100; // 150から100に変更（1.5倍速）
+          const currentDelay = Math.max(10, baseDelay * Math.pow(0.2, progress)); // 15から10に変更
           
           // 次のカウントダウンをスケジュール
           setTimeout(countdownStep, currentDelay);
