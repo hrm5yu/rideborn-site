@@ -13,11 +13,13 @@ let postsData: any[] = [];
 try {
   // まず/postsエンドポイントを試す
   postsData = await cmsFetch('/posts');
-  console.log('Successfully fetched posts:', postsData.length);
+  console.log('Posts API response:', postsData);
+  console.log('Successfully fetched posts:', postsData?.length || 0);
   
   // 次に/museumエンドポイントを試す
   museumItems = await cmsFetch('/museum');
-  console.log('Successfully fetched museum items:', museumItems.length);
+  console.log('Museum API response:', museumItems);
+  console.log('Successfully fetched museum items:', museumItems?.length || 0);
 } catch (error) {
   console.error('microCMS fetch error:', error);
   errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -52,8 +54,10 @@ try {
             )}
             <div class="debug-info">
               <p><strong>デバッグ情報:</strong></p>
-              <p>Posts データ数: {postsData.length}</p>
-              <p>Museum データ数: {museumItems.length}</p>
+              <p>Posts データ数: {postsData?.length || 0}</p>
+              <p>Museum データ数: {museumItems?.length || 0}</p>
+              <p>Posts レスポンス構造: {JSON.stringify(postsData, null, 2)}</p>
+              <p>Museum レスポンス構造: {JSON.stringify(museumItems, null, 2)}</p>
             </div>
           </div>
         )}
