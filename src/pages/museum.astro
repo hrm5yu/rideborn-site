@@ -6,7 +6,14 @@ import Card from '../components/Card.astro';
 import { cmsFetch } from '../lib/microcms';
 import type { MuseumItem } from '../lib/types';
 
-const museumItems: MuseumItem[] = await cmsFetch('/museum');
+let museumItems: MuseumItem[] = [];
+try {
+  museumItems = await cmsFetch('/museum');
+} catch (error) {
+  console.error('microCMS fetch error:', error);
+  // エラーが発生した場合は空の配列を使用
+  museumItems = [];
+}
 ---
 <Layout title="MUSEUM - Ride Born">
   <Header />
@@ -20,12 +27,41 @@ const museumItems: MuseumItem[] = await cmsFetch('/museum');
         </div>
       </div>
       <div class="gallery-grid" data-sortable-container>
-        {museumItems.map((item) => (
-          <Card post={item} />
-        ))}
+        {museumItems.length > 0 ? (
+          museumItems.map((item) => (
+            <Card post={item} />
+          ))
+        ) : (
+          <div class="no-data">
+            <h3>データがありません</h3>
+            <p>museumエンドポイントにデータが存在しないか、APIキーにアクセス権限がありません。</p>
+          </div>
+        )}
       </div>
     </section>
   </main>
   <Footer />
 </Layout>
+
+<style>
+  .no-data {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-color);
+    grid-column: 1 / -1;
+  }
+  
+  .no-data h3 {
+    font-family: "Anton", "Arial", sans-serif;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+  }
+  
+  .no-data p {
+    font-family: "Noto Sans JP", "Arial", sans-serif;
+    font-size: 1.1rem;
+    opacity: 0.8;
+  }
+</style>
 
