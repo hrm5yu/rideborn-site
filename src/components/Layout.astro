@@ -21,6 +21,12 @@ const { title = 'Ride Born', description = 'Japan\'s classic car community & int
         transition: opacity 1.5s ease-out, transform 1.5s ease-out;
       }
       
+      /* ヘッダーは常に表示 */
+      .header {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      
       .main-content.fade-in {
         opacity: 1;
         transform: translateY(0);

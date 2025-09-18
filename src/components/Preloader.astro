@@ -73,8 +73,13 @@
     // 初回訪問でない場合はアニメーションなしで即座に表示
     if (hasVisited) {
       const mainContent = document.querySelector('.main-content');
+      const header = document.querySelector('.header');
       if (mainContent) {
         mainContent.classList.add('no-animation');
+      }
+      if (header) {
+        header.style.display = 'block';
+        header.style.opacity = '1';
       }
       return;
     }
@@ -107,10 +112,15 @@
             
             // メインコンテンツを浮かび上がらせる
             const mainContent = document.querySelector('.main-content');
+            const header = document.querySelector('.header');
             if (mainContent) {
               setTimeout(() => {
                 mainContent.classList.add('fade-in');
               }, 500); // プリロードが半分フェードアウトしたタイミングで開始
+            }
+            if (header) {
+              header.style.display = 'block';
+              header.style.opacity = '1';
             }
             
             // プリロードを完全に非表示にする
