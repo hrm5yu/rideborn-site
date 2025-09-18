@@ -6,17 +6,10 @@
     </div>
     
     <div class="email-section">
-      <form class="email-form" id="emailForm">
-        <input 
-          type="email" 
-          placeholder="Email" 
-          class="email-input"
-          required
-        >
-        <button type="submit" class="email-submit">
-          <span>→</span>
-        </button>
-      </form>
+      <button class="contact-button" id="contactButton">
+        <span class="button-text">お問い合わせ</span>
+        <span class="button-icon">→</span>
+      </button>
     </div>
     
     <div class="social-section">
@@ -36,52 +29,30 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const emailForm = document.getElementById('emailForm');
+    const contactButton = document.getElementById('contactButton');
     
-    if (emailForm) {
-      emailForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+    if (contactButton) {
+      contactButton.addEventListener('click', () => {
+        // rideborn.official@gmail.com宛のメールを作成
+        const subject = encodeURIComponent('RIDE BORN お問い合わせ');
+        const body = encodeURIComponent('お問い合わせ内容をこちらにご記入ください。\n\n');
+        const mailtoLink = `mailto:rideborn.official@gmail.com?subject=${subject}&body=${body}`;
         
-        const emailInput = emailForm.querySelector('.email-input');
-        const email = emailInput.value;
+        // メールクライアントを開く
+        window.location.href = mailtoLink;
         
-        if (email) {
-          // Simulate email subscription
-          const submitBtn = emailForm.querySelector('.email-submit');
-          const originalContent = submitBtn.innerHTML;
-          
-          submitBtn.innerHTML = '✓';
-          submitBtn.style.background = '#4ecdc4';
-          
-          setTimeout(() => {
-            submitBtn.innerHTML = originalContent;
-            submitBtn.style.background = '';
-            emailInput.value = '';
-            showNotification('メールアドレスを登録しました！', 'success');
-          }, 2000);
-        }
+        // ボタンの視覚的フィードバック
+        const originalContent = contactButton.innerHTML;
+        contactButton.innerHTML = '<span class="button-text">メールアプリを開いています...</span><span class="button-icon">✓</span>';
+        contactButton.style.background = '#4ecdc4';
+        
+        setTimeout(() => {
+          contactButton.innerHTML = originalContent;
+          contactButton.style.background = '';
+        }, 2000);
       });
     }
   });
-
-  function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.innerHTML = `
-      <span class="notification-text">${message}</span>
-      <button class="notification-close">×</button>
-    `;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-      notification.remove();
-    }, 5000);
-    
-    notification.querySelector('.notification-close').addEventListener('click', () => {
-      notification.remove();
-    });
-  }
 </script>
 
 <style>
@@ -128,47 +99,39 @@
     justify-content: center;
   }
 
-  .email-form {
+  .contact-button {
     display: flex;
     align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
     background: transparent;
     border: 1px solid #ffffff;
     border-radius: 0;
-    max-width: 300px;
-    width: 100%;
-  }
-
-  .email-input {
-    flex: 1;
-    padding: 1rem;
-    background: transparent;
-    border: none;
     color: #ffffff;
     font-size: 1rem;
-    outline: none;
-  }
-
-  .email-input::placeholder {
-    color: #ffffff;
-    opacity: 0.7;
-  }
-
-  .email-submit {
-    padding: 1rem;
-    background: transparent;
-    border: none;
-    color: #ffffff;
     cursor: pointer;
-    font-size: 1.2rem;
     transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 50px;
+    font-family: inherit;
+    min-width: 200px;
   }
 
-  .email-submit:hover {
+  .contact-button:hover {
     background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .button-text {
+    flex: 1;
+    text-align: center;
+  }
+
+  .button-icon {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+
+  .contact-button:hover .button-icon {
+    transform: translateX(4px);
   }
 
   .social-section {
@@ -201,57 +164,6 @@
     height: 20px;
   }
 
-  /* Notifications */
-  .notification {
-    position: fixed;
-    top: 2rem;
-    right: 2rem;
-    background: #ffffff;
-    color: #333;
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    animation: slideIn 0.3s ease;
-  }
-
-  .notification-success {
-    background: #4ecdc4;
-    color: #ffffff;
-  }
-
-  .notification-error {
-    background: #ff6b6b;
-    color: #ffffff;
-  }
-
-  @keyframes slideIn {
-    from {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-
-  .notification-close {
-    background: none;
-    border: none;
-    color: inherit;
-    font-size: 1.2rem;
-    cursor: pointer;
-    padding: 0;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 
   /* Responsive */
   @media (max-width: 768px) {
@@ -271,8 +183,10 @@
       font-size: 0.9rem;
     }
     
-    .email-form {
-      max-width: 250px;
+    .contact-button {
+      min-width: 180px;
+      padding: 0.8rem 1.5rem;
+      font-size: 0.9rem;
     }
     
     .social-section {
