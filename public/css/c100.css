@@ -443,6 +443,21 @@ body::before {
   letter-spacing: 0.3px;
 }
 
+/* Value Header */
+.value-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.value-header h2 {
+  font-family: "Anton", "Arial", sans-serif;
+  font-size: clamp(28px, 4.5vw, 40px);
+  color: var(--primary-color);
+  margin: 0;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+}
+
 .concept-list {
   display: flex;
   flex-direction: column;
@@ -1858,6 +1873,14 @@ body::before {
   
   .concept-header p {
     font-size: clamp(14px, 3vw, 16px);
+  }
+  
+  .value-header {
+    margin-bottom: 40px;
+  }
+  
+  .value-header h2 {
+    font-size: clamp(20px, 5vw, 28px);
   }
   
   .concept-grid {
