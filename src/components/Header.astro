@@ -9,7 +9,7 @@
     </div>
     <nav class="nav">
       <a href="/rideborn-site/" class="nav-link">TOP</a>
-      <a href="#mission" class="nav-link mission-link">MISSION</a>
+      <a href="/rideborn-site/#mission" class="nav-link mission-link">MISSION</a>
       <a href="/rideborn-site/museum" class="nav-link">MUSEUM</a>
       <a href="/rideborn-site/contact" class="nav-link">CONTACT</a>
       <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="nav-link sns-link">
@@ -34,7 +34,7 @@
       <span>×</span>
     </button>
     <a href="/rideborn-site/" class="nav-link">TOP</a>
-    <a href="#mission" class="nav-link mission-link">MISSION</a>
+    <a href="/rideborn-site/#mission" class="nav-link mission-link">MISSION</a>
     <a href="/rideborn-site/museum" class="nav-link">MUSEUM</a>
     <a href="/rideborn-site/contact" class="nav-link">CONTACT</a>
     <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="nav-link sns-link">
@@ -90,22 +90,26 @@
       }
     });
     
-    // Smooth scroll for mission link
+    // Smooth scroll for mission link (only on TOP page)
     const missionLinks = document.querySelectorAll('.mission-link');
     missionLinks.forEach(link => {
       link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const missionSection = document.getElementById('mission');
-        if (missionSection) {
-          const headerHeight = document.querySelector('.header').offsetHeight;
-          const elementPosition = missionSection.offsetTop;
-          const offsetPosition = elementPosition - headerHeight - 20; // ヘッダー高さ + 20px余白
-          
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          });
+        // TOPページにいる場合のみスムーススクロール
+        if (window.location.pathname === '/rideborn-site/' || window.location.pathname === '/rideborn-site/index.html') {
+          e.preventDefault();
+          const missionSection = document.getElementById('mission');
+          if (missionSection) {
+            const headerHeight = document.querySelector('.header').offsetHeight;
+            const elementPosition = missionSection.offsetTop;
+            const offsetPosition = elementPosition - headerHeight - 20; // ヘッダー高さ + 20px余白
+            
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
+          }
         }
+        // 他のページからは通常のリンクとして動作（何もしない）
       });
     });
   });
