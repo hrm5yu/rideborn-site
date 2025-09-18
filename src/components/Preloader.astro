@@ -3,6 +3,9 @@
 ---
 
 <div id="preloader" class="preloader">
+  <video class="preloader-video" autoplay muted loop>
+    <source src="/rideborn-site/movie/warp.mp4" type="video/mp4">
+  </video>
   <div class="countdown-container">
     <div class="countdown-text" id="countdown-text">2025</div>
   </div>
@@ -24,6 +27,16 @@
     overflow: hidden;
   }
   
+  .preloader-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+  
   /* 初回訪問時のみ表示 */
   .preloader.show {
     display: flex;
@@ -37,6 +50,8 @@
 
   .countdown-container {
     text-align: center;
+    position: relative;
+    z-index: 2;
   }
 
   .countdown-text {
@@ -44,6 +59,10 @@
     color: #dfdbcf; /* TOPページの背景色 */
     font-weight: bold;
     letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px 40px;
+    border-radius: 10px;
   }
 
   /* Responsive design */
