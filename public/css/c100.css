@@ -535,7 +535,7 @@ body::before {
 .concept-layout {
   display: grid;
   grid-template-columns: 1fr 1.5fr;
-  gap: 40px;
+  gap: 80px; /* 文章と写真の間隔を広げる */
   align-items: center;
   padding: 20px 20px 20px 20px;
   background: var(--background-color);
@@ -1891,7 +1891,7 @@ body::before {
   
   .concept-layout {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 50px; /* モバイルでも文章と写真の間隔を広げる */
     padding: 15px 10px 15px 10px;
   }
   
