@@ -8,6 +8,62 @@
 html {
   overflow-x: hidden;
   max-width: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 120px; /* 固定ヘッダーの高さ分のオフセット */
+}
+
+/* スクロールの重さとトルク感を調整 */
+body {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory; /* スナップスクロールを有効化 */
+  overscroll-behavior: contain; /* スクロールの慣性を制御 */
+}
+
+/* セクションごとにスナップポイントを設定 */
+.hero,
+.mission-intro,
+.concept-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* スクロール強度に応じた視覚的フィードバック */
+body {
+  transition: transform 0.1s ease-out;
+}
+
+/* スクロール中の重さ感を演出 */
+.hero,
+.mission-intro,
+.concept-section {
+  transition: transform 0.2s ease-out, filter 0.2s ease-out;
+}
+
+/* スクロール強度が高い時の視覚効果 */
+body[style*="--scroll-intensity"] {
+  filter: contrast(calc(1 + var(--scroll-intensity, 0) * 0.1));
+}
+
+/* セクション間のスクロール感を重くする */
+.hero::after,
+.mission-intro::after,
+.concept-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* スクロール中のセクション境界を強調 */
+.hero:hover::after,
+.mission-intro:hover::after,
+.concept-section:hover::after {
+  opacity: 0.3;
 }
 
 /* Color palette */
