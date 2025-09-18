@@ -88,6 +88,14 @@
     preloader.classList.add('show');
     sessionStorage.setItem('hasVisited', 'true');
     
+    // ヘッダーを確実に表示
+    const header = document.querySelector('.header');
+    if (header) {
+      header.style.display = 'block';
+      header.style.opacity = '1';
+      header.style.visibility = 'visible';
+    }
+    
     // Start Countdown
     startCountdown();
     
