@@ -31,22 +31,6 @@ jobs:
         uses: actions/configure-pages@v4
       - name: Install dependencies
         run: npm ci
-      - name: Debug environment variables
-        run: |
-          echo "MICROCMS_API_KEY is set: ${{ secrets.MICROCMS_API_KEY != '' }}"
-          echo "PUBLIC_MICROCMS_SERVICE_DOMAIN is set: ${{ secrets.PUBLIC_MICROCMS_SERVICE_DOMAIN != '' }}"
-          echo "MICROCMS_API_KEY length: ${#MICROCMS_API_KEY}"
-          echo "PUBLIC_MICROCMS_SERVICE_DOMAIN: $PUBLIC_MICROCMS_SERVICE_DOMAIN"
-          echo "MICROCMS_API_KEY first 10 chars: ${MICROCMS_API_KEY:0:10}..."
-      - name: Test microCMS API
-        run: |
-          echo "Testing /posts endpoint..."
-          curl -s -o /dev/null -w "%{http_code}" "https://$PUBLIC_MICROCMS_SERVICE_DOMAIN.microcms.io/api/v1/posts" -H "X-MICROCMS-API-KEY: $MICROCMS_API_KEY" || echo "Failed"
-          echo "Testing /museum endpoint..."
-          curl -s -o /dev/null -w "%{http_code}" "https://$PUBLIC_MICROCMS_SERVICE_DOMAIN.microcms.io/api/v1/museum" -H "X-MICROCMS-API-KEY: $MICROCMS_API_KEY" || echo "Failed"
-        env:
-          MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
-          PUBLIC_MICROCMS_SERVICE_DOMAIN: ${{ secrets.PUBLIC_MICROCMS_SERVICE_DOMAIN }}
       - name: Build with Astro
         run: npm run build
         env:
