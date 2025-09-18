@@ -124,15 +124,21 @@
       const totalYears = currentYear - targetYear;
       
       let currentYearValue = currentYear;
+      let currentDelay = 800; // 最初は800ms間隔（ゆっくり）
+      const minDelay = 50; // 最小50ms間隔（速い）
+      const acceleration = 0.95; // 加速率
       
-      // カウントダウン開始
-      const countdownInterval = setInterval(() => {
+      function countdownStep() {
         if (currentYearValue > targetYear) {
           currentYearValue--;
           countdownText.textContent = currentYearValue.toString();
-        } else {
-          clearInterval(countdownInterval);
           
+          // 次のステップの遅延時間を計算（だんだん速く）
+          currentDelay = Math.max(minDelay, currentDelay * acceleration);
+          
+          // 次のカウントダウンをスケジュール
+          setTimeout(countdownStep, currentDelay);
+        } else {
           // カウントダウン完了後、少し待ってからフェードアウト
           setTimeout(() => {
             preloader.classList.add('fade-out');
@@ -156,7 +162,10 @@
             }, 1000);
           }, 1000);
         }
-      }, 100); // 100ms間隔でカウントダウン
+      }
+      
+      // カウントダウン開始
+      countdownStep();
     }
   });
 </script>
