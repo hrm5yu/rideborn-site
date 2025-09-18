@@ -60,9 +60,6 @@
     font-weight: bold;
     letter-spacing: 2px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    background: rgba(0, 0, 0, 0.3);
-    padding: 20px 40px;
-    border-radius: 10px;
   }
 
   /* Responsive design */
@@ -122,19 +119,23 @@
       const currentYear = new Date().getFullYear();
       const targetYear = 1960;
       const totalYears = currentYear - targetYear;
+      const totalDuration = 5000; // 全体で5秒
       
       let currentYearValue = currentYear;
-      let currentDelay = 800; // 最初は800ms間隔（ゆっくり）
-      const minDelay = 50; // 最小50ms間隔（速い）
-      const acceleration = 0.95; // 加速率
+      let startTime = Date.now();
       
       function countdownStep() {
         if (currentYearValue > targetYear) {
           currentYearValue--;
           countdownText.textContent = currentYearValue.toString();
           
-          // 次のステップの遅延時間を計算（だんだん速く）
-          currentDelay = Math.max(minDelay, currentDelay * acceleration);
+          // 経過時間に基づいて次の遅延を計算
+          const elapsed = Date.now() - startTime;
+          const progress = elapsed / totalDuration;
+          
+          // 最初はゆっくり、だんだん速く（指数関数的に加速）
+          const baseDelay = 200;
+          const currentDelay = Math.max(20, baseDelay * Math.pow(0.3, progress));
           
           // 次のカウントダウンをスケジュール
           setTimeout(countdownStep, currentDelay);
