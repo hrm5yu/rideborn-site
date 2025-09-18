@@ -2380,7 +2380,7 @@ body::before {
   
   .gallery-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px; /* 小さな画面ではギャップを狭く */
+    gap: 0; /* スマホでは行間スペースを完全に削除 */
   }
   
   .hero {
@@ -2421,7 +2421,7 @@ body::before {
 @media (max-width: 320px) {
   .gallery-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 4px; /* さらに狭いギャップ */
+    gap: 0; /* 非常に小さな画面でも行間スペースを完全に削除 */
   }
   
   .card {
