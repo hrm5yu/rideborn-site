@@ -7,10 +7,20 @@ import { cmsFetch } from '../lib/microcms';
 import type { MuseumItem } from '../lib/types';
 
 let museumItems: MuseumItem[] = [];
+let errorMessage = '';
+let postsData: any[] = [];
+
 try {
+  // まず/postsエンドポイントを試す
+  postsData = await cmsFetch('/posts');
+  console.log('Successfully fetched posts:', postsData.length);
+  
+  // 次に/museumエンドポイントを試す
   museumItems = await cmsFetch('/museum');
+  console.log('Successfully fetched museum items:', museumItems.length);
 } catch (error) {
   console.error('microCMS fetch error:', error);
+  errorMessage = error instanceof Error ? error.message : 'Unknown error';
   // エラーが発生した場合は空の配列を使用
   museumItems = [];
 }
@@ -35,6 +45,16 @@ try {
           <div class="no-data">
             <h3>データがありません</h3>
             <p>museumエンドポイントにデータが存在しないか、APIキーにアクセス権限がありません。</p>
+            {errorMessage && (
+              <div class="error-details">
+                <p><strong>エラー詳細:</strong> {errorMessage}</p>
+              </div>
+            )}
+            <div class="debug-info">
+              <p><strong>デバッグ情報:</strong></p>
+              <p>Posts データ数: {postsData.length}</p>
+              <p>Museum データ数: {museumItems.length}</p>
+            </div>
           </div>
         )}
       </div>
@@ -62,6 +82,19 @@ try {
     font-family: "Noto Sans JP", "Arial", sans-serif;
     font-size: 1.1rem;
     opacity: 0.8;
+  }
+  
+  .error-details, .debug-info {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(255, 0, 0, 0.1);
+    border-radius: 8px;
+    font-family: "Noto Sans JP", "Arial", sans-serif;
+    font-size: 0.9rem;
+  }
+  
+  .debug-info {
+    background: rgba(0, 255, 0, 0.1);
   }
 </style>
 
