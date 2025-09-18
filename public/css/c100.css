@@ -608,7 +608,7 @@ body::before {
 }
 
 .concept-image-section .concept-image {
-  height: 200px;
+  height: 300px;
   border-radius: 8px;
   overflow: hidden;
   position: relative;
@@ -1910,7 +1910,7 @@ body::before {
   }
   
   .concept-image-section .concept-image {
-    height: 200px;
+    height: 250px;
   }
   
   .concept-button {
