@@ -1,5 +1,4 @@
 ---
-import Preloader from './Preloader.astro';
 const { title = 'Ride Born', description = 'Japan\'s classic car community & interviews' } = Astro.props;
 ---
 <!doctype html>
@@ -9,8 +8,10 @@ const { title = 'Ride Born', description = 'Japan\'s classic car community & int
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/rideborn-site/css/c100.css" />
-    <script src="https://unpkg.com/sortablejs@1.15.0/Sortable.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script> -->
@@ -26,7 +27,6 @@ const { title = 'Ride Born', description = 'Japan\'s classic car community & int
     <!-- <script src="/js/page-transitions.js" defer></script> -->
   </head>
   <body>
-    <Preloader />
     <slot />
     <script src="/rideborn-site/js/main.js" defer></script>
   </body>

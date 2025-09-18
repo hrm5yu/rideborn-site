@@ -1,5 +1,292 @@
-<footer class="rb-foot">
-  <div class="rb-inner">
-    <small>© {new Date().getFullYear()} RIDE BORN</small>
+<footer class="footer">
+  <div class="footer-content">
+    <div class="brand-section">
+      <h2 class="brand-title">RIDE BORN</h2>
+      <p class="brand-subtitle">Get updates & be the first to hear about new content.</p>
+    </div>
+    
+    <div class="email-section">
+      <form class="email-form" id="emailForm">
+        <input 
+          type="email" 
+          placeholder="Email" 
+          class="email-input"
+          required
+        >
+        <button type="submit" class="email-submit">
+          <span>→</span>
+        </button>
+      </form>
+    </div>
+    
+    <div class="social-section">
+      <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+        </svg>
+      </a>
+      <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" class="social-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+        </svg>
+      </a>
+    </div>
   </div>
 </footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const emailForm = document.getElementById('emailForm');
+    
+    if (emailForm) {
+      emailForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const emailInput = emailForm.querySelector('.email-input');
+        const email = emailInput.value;
+        
+        if (email) {
+          // Simulate email subscription
+          const submitBtn = emailForm.querySelector('.email-submit');
+          const originalContent = submitBtn.innerHTML;
+          
+          submitBtn.innerHTML = '✓';
+          submitBtn.style.background = '#4ecdc4';
+          
+          setTimeout(() => {
+            submitBtn.innerHTML = originalContent;
+            submitBtn.style.background = '';
+            emailInput.value = '';
+            showNotification('メールアドレスを登録しました！', 'success');
+          }, 2000);
+        }
+      });
+    }
+  });
+
+  function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+      <span class="notification-text">${message}</span>
+      <button class="notification-close">×</button>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.remove();
+    }, 5000);
+    
+    notification.querySelector('.notification-close').addEventListener('click', () => {
+      notification.remove();
+    });
+  }
+</script>
+
+<style>
+  .footer {
+    background: #000000;
+    color: #ffffff;
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+
+  .footer-content {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .brand-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .brand-title {
+    font-family: "Anton", "Arial", sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin: 0;
+    font-style: italic;
+  }
+
+  .brand-subtitle {
+    font-size: 1rem;
+    color: #ffffff;
+    margin: 0;
+    opacity: 0.9;
+  }
+
+  .email-section {
+    display: flex;
+    justify-content: center;
+  }
+
+  .email-form {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: 1px solid #ffffff;
+    border-radius: 0;
+    max-width: 300px;
+    width: 100%;
+  }
+
+  .email-input {
+    flex: 1;
+    padding: 1rem;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 1rem;
+    outline: none;
+  }
+
+  .email-input::placeholder {
+    color: #ffffff;
+    opacity: 0.7;
+  }
+
+  .email-submit {
+    padding: 1rem;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+  }
+
+  .email-submit:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .social-section {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .social-icon:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  .social-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Notifications */
+  .notification {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    background: #ffffff;
+    color: #333;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    animation: slideIn 0.3s ease;
+  }
+
+  .notification-success {
+    background: #4ecdc4;
+    color: #ffffff;
+  }
+
+  .notification-error {
+    background: #ff6b6b;
+    color: #ffffff;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .notification-close {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .footer {
+      padding: 3rem 1rem;
+    }
+    
+    .footer-content {
+      gap: 1.5rem;
+    }
+    
+    .brand-title {
+      font-size: 2rem;
+    }
+    
+    .brand-subtitle {
+      font-size: 0.9rem;
+    }
+    
+    .email-form {
+      max-width: 250px;
+    }
+    
+    .social-section {
+      gap: 1rem;
+    }
+    
+    .social-icon {
+      width: 35px;
+      height: 35px;
+    }
+    
+    .social-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+</style>

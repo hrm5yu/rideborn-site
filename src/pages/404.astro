@@ -6,13 +6,25 @@ import Footer from '../components/Footer.astro';
 
 <Layout title="404 - Page Not Found">
   <Header />
-  <main class="rb-main">
-    <div class="error-page">
+  <main class="page">
+    <div class="container">
+      <div class="page-header">
+        <h1 class="title" data-text="404">404</h1>
+        <p class="subtitle">ページが見つかりません</p>
+      </div>
+      
       <div class="error-content">
-        <h1 class="error-title">404</h1>
-        <h2 class="error-subtitle">PAGE NOT FOUND</h2>
-        <p class="error-message">The page you're looking for doesn't exist.</p>
-        <a href="/rideborn-site/" class="error-link">Back to Home</a>
+        <div class="error-message">
+          <p>お探しのページは存在しないか、移動された可能性があります。</p>
+          <p>URLをご確認いただくか、ホームページから再度お探しください。</p>
+        </div>
+        
+        <div class="error-actions">
+          <a href="/rideborn-site/" class="btn-primary">
+            <span class="btn-text">ホームに戻る</span>
+            <span class="btn-icon">→</span>
+          </a>
+        </div>
       </div>
     </div>
   </main>
@@ -20,88 +32,132 @@ import Footer from '../components/Footer.astro';
 </Layout>
 
 <style>
-  .error-page {
-    min-height: 60vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 2rem;
+  /* 404 Page Styles */
+  .page {
+    min-height: 100vh;
+    background: var(--background-color);
+    color: var(--text-color);
+    padding: 2rem 0;
+    padding-top: 120px; /* ヘッダーの高さ分のパディングを追加 */
   }
 
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  /* Page Header */
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .title {
+    font-family: "Anton", "Arial", sans-serif;
+    font-size: clamp(4rem, 8vw, 8rem);
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    position: relative;
+  }
+
+  .title::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--primary-color);
+    z-index: -1;
+  }
+
+  .subtitle {
+    font-family: "Noto Sans JP", "Arial", sans-serif;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: var(--text-color);
+    opacity: 0.8;
+    margin: 0;
+  }
+
+  /* Error Content */
   .error-content {
     max-width: 600px;
-  }
-
-  .error-title {
-    font-family: "Courier New", "Monaco", monospace;
-    font-size: 8rem;
-    font-weight: bold;
-    color: #00ff41;
-    text-shadow: 
-      0 0 10px #00ff41,
-      0 0 20px #00ff41,
-      0 0 30px #00ff41;
-    margin: 0;
-    animation: neon-flicker 2s ease-in-out infinite alternate;
-  }
-
-  .error-subtitle {
-    font-family: "Courier New", "Monaco", monospace;
-    font-size: 1.5rem;
-    color: #00ff41;
-    margin: 1rem 0;
-    letter-spacing: 3px;
+    margin: 0 auto;
+    text-align: center;
   }
 
   .error-message {
-    font-family: "Courier New", "Monaco", monospace;
-    font-size: 1rem;
-    color: #00ff41;
-    opacity: 0.8;
-    margin: 2rem 0;
+    margin-bottom: 3rem;
   }
 
-  .error-link {
-    display: inline-block;
-    font-family: "Courier New", "Monaco", monospace;
-    font-size: 1rem;
-    color: #00ff41;
-    text-decoration: none;
-    border: 2px solid #00ff41;
+  .error-message p {
+    font-family: "Noto Sans JP", "Arial", sans-serif;
+    font-size: clamp(1rem, 2.5vw, 1.1rem);
+    line-height: 1.6;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+  }
+
+  /* Button Styles */
+  .error-actions {
+    display: flex;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     padding: 12px 24px;
+    background: var(--primary-color);
+    color: var(--background-color);
+    text-decoration: none;
+    border-radius: 6px;
+    font-family: "Anton", "Arial", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
     transition: all 0.3s ease;
-    box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+    border: 1px solid var(--primary-color);
   }
 
-  .error-link:hover {
-    background: #00ff41;
-    color: #000;
-    box-shadow: 0 0 20px rgba(0, 255, 65, 0.6);
+  .btn-primary:hover {
+    background: transparent;
+    color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(70, 91, 84, 0.2);
   }
 
-  @keyframes neon-flicker {
-    0%, 100% { 
-      text-shadow: 
-        0 0 10px #00ff41,
-        0 0 20px #00ff41,
-        0 0 30px #00ff41;
-    }
-    50% { 
-      text-shadow: 
-        0 0 5px #00ff41,
-        0 0 10px #00ff41,
-        0 0 15px #00ff41;
-    }
+  .btn-icon {
+    transition: transform 0.3s ease;
   }
 
+  .btn-primary:hover .btn-icon {
+    transform: translateX(3px);
+  }
+
+  /* Responsive */
   @media (max-width: 768px) {
-    .error-title {
-      font-size: 4rem;
+    .page {
+      padding-top: 100px;
     }
     
-    .error-subtitle {
-      font-size: 1.2rem;
+    .page-header {
+      margin-bottom: 2rem;
+    }
+    
+    .error-message {
+      margin-bottom: 2rem;
+    }
+    
+    .btn-primary {
+      padding: 10px 20px;
+      font-size: 13px;
     }
   }
 </style>

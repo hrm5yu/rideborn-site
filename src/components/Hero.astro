@@ -1,0 +1,151 @@
+、タイヤが回るように右端を軸に
+// Hero component for RIDEBORN showcase - First View Only
+---
+
+<div class="hero-container">
+  <div class="hero">
+    <div class="hero-content">
+      <img src="/images/hero-car.png" alt="RIDEBORN Hero Image" class="hero-image" />
+    </div>
+  </div>
+  <!-- シャッターオーバーレイ -->
+  <div class="shutter-overlay"></div>
+</div>
+
+<style>
+  .hero-container {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero {
+    height: 100vh;
+    width: 100vw;
+    background: #0097b2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-image {
+    max-width: 80vw;
+    max-height: 80vh;
+    object-fit: contain;
+  }
+
+  /* シャッターオーバーレイ */
+  .shutter-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/shutter.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 10;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('Hero component loaded');
+    
+    // 上方向のムーブを検知してビジョンセクションに移動
+    let startY = 0;
+    let endY = 0;
+    
+    // タッチイベント
+    const handleTouchStart = function(e) {
+      startY = e.touches[0].clientY;
+    };
+    
+    const handleTouchEnd = function(e) {
+      endY = e.changedTouches[0].clientY;
+      const diffY = startY - endY;
+      
+      if (diffY > 50) {
+        console.log('上方向スワイプ検知、ビジョンセクションへ移動');
+        showVisionSection();
+      }
+    };
+
+    // マウスイベント
+    let mouseStartY = 0;
+    let mouseEndY = 0;
+    let isDragging = false;
+    
+    const handleMouseDown = function(e) {
+      mouseStartY = e.clientY;
+      isDragging = true;
+    };
+    
+    const handleMouseUp = function(e) {
+      if (isDragging) {
+        mouseEndY = e.clientY;
+        const diffY = mouseStartY - mouseEndY;
+        
+        if (diffY > 50) {
+          console.log('上方向マウスドラッグ検知、ビジョンセクションへ移動');
+          showVisionSection();
+        }
+      }
+      isDragging = false;
+    };
+    
+    const handleMouseMove = function(e) {
+      // ドラッグ中は何もしない
+    };
+
+    // ホイールイベント
+    const handleWheel = function(e) {
+      if (e.deltaY < 0) {
+        console.log('上方向ホイール検知、ビジョンセクションへ移動');
+        showVisionSection();
+      }
+    };
+
+    // キーボードイベント
+    const handleKeydown = function(e) {
+      if (e.key === 'ArrowUp' || e.key === ' ') {
+        console.log('キーボード操作検知、ビジョンセクションへ移動');
+        showVisionSection();
+      }
+    };
+
+    // イベントリスナーを追加
+    document.addEventListener('touchstart', handleTouchStart);
+    document.addEventListener('touchend', handleTouchEnd);
+    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('wheel', handleWheel);
+    document.addEventListener('keydown', handleKeydown);
+
+    // ビジョンセクションを表示する関数
+    function showVisionSection() {
+      const heroContainer = document.querySelector('.hero-container');
+      const visionSection = document.querySelector('.vision-section');
+      
+      if (heroContainer && visionSection) {
+        // ヒーローセクションを上にスライドアウト（シャッターが開く）
+        heroContainer.style.transform = 'translateY(-100%)';
+        heroContainer.style.transition = 'transform 1s ease-in-out';
+        
+        // ビジョンセクションは既に存在しているので、何もしない
+        console.log('シャッターが開いてビジョンセクションが表示されました');
+      }
+    }
+  });
+</script>

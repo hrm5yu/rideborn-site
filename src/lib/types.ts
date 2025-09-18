@@ -6,6 +6,13 @@ export type Post = {
   body?: string; // rich editor (HTML)
 };
 
+export type MuseumItem = {
+  id: string;
+  title: string;
+  slug: string;
+  image?: { url: string; width?: number; height?: number };
+};
+
 export type MicroCMSList<T> = {
   contents: T[];
   totalCount: number;

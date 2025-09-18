@@ -2,11 +2,6 @@
 import Layout from '../components/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import Card from '../components/Card.astro';
-import type { Post, MicroCMSList } from '../lib/types';
-import { cmsFetch } from '../lib/microcms';
-
-const posts: MicroCMSList<Post> = await cmsFetch('/posts', { limit: 20, orders: '-id' });
 ---
 <Layout title="Ride Born">
   <Header />
@@ -21,18 +16,93 @@ const posts: MicroCMSList<Post> = await cmsFetch('/posts', { limit: 20, orders: 
       </div>
     </section>
 
-    <section class="gallery">
-      <div class="gallery-header">
-        <h2>Gallery</h2>
-        <div class="gallery-controls">
-          <button class="shuffle-btn" data-shuffle>Shuffle</button>
-          <button class="reset-btn" data-sort-reset>Reset Order</button>
+    <section class="mission-intro">
+      <div class="mission-content">
+        <p>かつて父の世代を熱狂させた旧車たち。<br>
+        街を走り抜けたエンジン音や仲間との思い出は、今も色褪せない。<br><br>
+        しかし若者の車離れで、その文化は消えかけている。<br>
+        RIDEBORNは旧車の物語を語り直し、<br>
+        若者に「クルマを持つ喜び」を伝える。<br><br>
+        一台が人生を変え、<br>
+        仲間をつなぐ未来を再び生み出すきっかけを提供します。</p>
+        <div class="mission-logo">
+          <img src="/rideborn-site/images/logo.png" alt="RIDEBORN" />
+        </div>
+        <div class="concept-section" id="mission">
+          <div class="concept-header">
+            <h2>RIDEBORN MISSION</h2>
+            <p>旧車の物語と魅力を伝え、若い世代に「クルマを持つ喜び」を再発見させる。<br><br>
+            若者の「車離れ」という社会課題に挑む</p>
+          </div>
+          <div class="concept-list">
+            <div class="concept-item concept-layout">
+              <div class="concept-text">
+                <h3>Open Garage</h3>
+                <p>誰でも入れるガレージのように開かれている</p>
+                <ul>
+                  <li>車を持っていなくても参加できる</li>
+                </ul>
+              </div>
+              <div class="concept-image-section">
+                <div class="thumbnail-gallery">
+                  <img src="/rideborn-site/images/OTG.jpg" alt="Open Garage Thumbnail" class="thumbnail-image" />
+                </div>
+                <a href="/rideborn-site/open-garage" class="concept-button">
+                  <span>写真一覧を見る</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div class="concept-item concept-layout">
+              <div class="concept-text">
+                <h3>Ride Your Life</h3>
+                <p>車に乗るだけでなく、<br>
+                人生を走らせる。</p>
+                <ul>
+                  <li>車を人生を豊かにするツールとして捉える</li>
+                </ul>
+              </div>
+              <div class="concept-image-section">
+                <div class="thumbnail-gallery">
+                  <img src="/rideborn-site/images/RYL_1.jpg" alt="Ride Your Life Thumbnail 1" class="thumbnail-image" />
+                  <img src="/rideborn-site/images/RYL_2.jpg" alt="Ride Your Life Thumbnail 2" class="thumbnail-image" />
+                  <img src="/rideborn-site/images/RYL_3.jpg" alt="Ride Your Life Thumbnail 3" class="thumbnail-image" />
+                </div>
+                <a href="/rideborn-site/ride-life" class="concept-button">
+                  <span>写真一覧を見る</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div class="concept-item concept-layout">
+              <div class="concept-text">
+                <h3>Bridge the Era</h3>
+                <p>時代をつなぐ</p>
+                <ul>
+                  <li>昭和の熱狂を、令和の好奇心へ</li>
+                </ul>
+              </div>
+              <div class="concept-image-section">
+                <div class="thumbnail-gallery">
+                  <img src="/rideborn-site/images/BTE.jpg" alt="Bridge the Era Thumbnail" class="thumbnail-image" />
+                </div>
+                <a href="/rideborn-site/bridge-era" class="concept-button">
+                  <span>写真一覧を見る</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6-6 6-1.41-1.41z"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="gallery-grid" data-sortable-container>
-        {posts.contents.map(post => <Card post={post} />)}
-      </div>
     </section>
+
   </main>
   <Footer />
 </Layout>

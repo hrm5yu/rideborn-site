@@ -1,0 +1,29 @@
+---
+import Layout from '../components/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Card from '../components/Card.astro';
+import type { MuseumItem, MicroCMSList } from '../lib/types';
+import { cmsFetch } from '../lib/microcms';
+
+// Get museum items from the museum endpoint
+const museumItems: MicroCMSList<MuseumItem> = await cmsFetch('/museum', { limit: 20, orders: '-id' });
+---
+<Layout title="MUSEUM - Ride Born">
+  <Header />
+  <main class="main museum-page">
+    <section class="gallery">
+      <div class="gallery-header">
+        <h2>MUSEUM</h2>
+        <div class="gallery-controls">
+          <button class="shuffle-btn" data-shuffle>Shuffle</button>
+          <button class="reset-btn" data-sort-reset>Reset Order</button>
+        </div>
+      </div>
+      <div class="gallery-grid" data-sortable-container>
+        {museumItems.contents.map(item => <Card post={item} />)}
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
