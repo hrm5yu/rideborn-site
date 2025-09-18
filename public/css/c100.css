@@ -1905,6 +1905,10 @@ body::before {
     font-size: clamp(12px, 2.5vw, 14px);
   }
   
+  .concept-image-section {
+    align-items: center; /* スマホでは中央揃え */
+  }
+  
   .concept-image-section .concept-image {
     height: 200px;
   }
