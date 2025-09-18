@@ -13,6 +13,19 @@ const { title = 'Ride Born', description = 'Japan\'s classic car community & int
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/rideborn-site/css/c100.css" />
+    <style>
+      /* メインコンテンツの浮かび上がりアニメーション */
+      .main-content {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+      }
+      
+      .main-content.fade-in {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script> -->
@@ -29,7 +42,9 @@ const { title = 'Ride Born', description = 'Japan\'s classic car community & int
   </head>
   <body>
     <Preloader />
-    <slot />
+    <div class="main-content">
+      <slot />
+    </div>
     <script src="/rideborn-site/js/main.js" defer></script>
   </body>
 </html>
