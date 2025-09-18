@@ -119,23 +119,34 @@
       const currentYear = new Date().getFullYear();
       const targetYear = 1960;
       const totalYears = currentYear - targetYear;
-      const totalDuration = 2500; // 全体で2.5秒
+      const totalDuration = 2000; // 全体で2秒
+      const initialPause = 500; // 現在の年代で0.5秒停止
       
       let currentYearValue = currentYear;
       let startTime = Date.now();
+      let hasPaused = false;
       
       function countdownStep() {
         if (currentYearValue > targetYear) {
+          // 現在の年代で0.5秒停止
+          if (!hasPaused && currentYearValue === currentYear) {
+            hasPaused = true;
+            setTimeout(() => {
+              countdownStep();
+            }, initialPause);
+            return;
+          }
+          
           currentYearValue--;
           countdownText.textContent = currentYearValue.toString();
           
-          // 経過時間に基づいて次の遅延を計算
-          const elapsed = Date.now() - startTime;
-          const progress = elapsed / totalDuration;
+          // 経過時間に基づいて次の遅延を計算（停止時間を除く）
+          const elapsed = Date.now() - startTime - initialPause;
+          const progress = elapsed / (totalDuration - initialPause);
           
           // 最初はゆっくり、だんだん速く（指数関数的に加速）
-          const baseDelay = 200;
-          const currentDelay = Math.max(20, baseDelay * Math.pow(0.3, progress));
+          const baseDelay = 150;
+          const currentDelay = Math.max(15, baseDelay * Math.pow(0.2, progress));
           
           // 次のカウントダウンをスケジュール
           setTimeout(countdownStep, currentDelay);
