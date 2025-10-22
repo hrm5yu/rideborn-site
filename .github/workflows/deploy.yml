@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to Onamae.com Server
 
 on:
   push:
@@ -7,47 +7,71 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "18"
           cache: 'npm'
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+      
       - name: Install dependencies
         run: npm ci
+      
       - name: Build with Astro
         run: npm run build
         env:
           MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
           PUBLIC_MICROCMS_SERVICE_DOMAIN: ${{ secrets.PUBLIC_MICROCMS_SERVICE_DOMAIN }}
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      
+      - name: Deploy to Onamae.com Server
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          path: ./dist
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            # バックアップを作成
+            if [ -d "${{ secrets.SERVER_DEPLOY_PATH }}" ]; then
+              cp -r "${{ secrets.SERVER_DEPLOY_PATH }}" "${{ secrets.SERVER_DEPLOY_PATH }}_backup_$(date +%Y%m%d_%H%M%S)"
+            fi
+            
+            # 既存のファイルを削除（隠しファイルを除く）
+            find "${{ secrets.SERVER_DEPLOY_PATH }}" -type f ! -name ".*" -delete 2>/dev/null || true
+            find "${{ secrets.SERVER_DEPLOY_PATH }}" -type d ! -name "." ! -name ".." -exec rm -rf {} + 2>/dev/null || true
+      
+      - name: Upload files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          source: "dist/*"
+          target: ${{ secrets.SERVER_DEPLOY_PATH }}
+          strip_components: 1
+      
+      - name: Set proper permissions
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            # ファイルの権限を設定
+            chmod -R 755 "${{ secrets.SERVER_DEPLOY_PATH }}"
+            find "${{ secrets.SERVER_DEPLOY_PATH }}" -type f -exec chmod 644 {} \;
+            find "${{ secrets.SERVER_DEPLOY_PATH }}" -type d -exec chmod 755 {} \;
+            
+            # デプロイ完了の通知
+            echo "Deployment completed successfully at $(date)"
