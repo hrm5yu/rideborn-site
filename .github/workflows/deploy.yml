@@ -32,74 +32,18 @@ jobs:
           MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
           PUBLIC_MICROCMS_SERVICE_DOMAIN: ${{ secrets.PUBLIC_MICROCMS_SERVICE_DOMAIN }}
       
-      - name: Test SSH Connection
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          host: ${{ secrets.SERVER_HOST }}
+          server: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          port: ${{ secrets.SERVER_PORT }}
-          script: |
-            echo "SSH接続テスト開始"
-            echo "現在のディレクトリ: $(pwd)"
-            echo "ユーザー: $(whoami)"
-            echo "ホスト名: $(hostname)"
-            echo "日時: $(date)"
-            echo "SSH接続テスト完了"
-      
-      - name: Deploy to Onamae.com Server
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          port: ${{ secrets.SERVER_PORT }}
-          script: |
-            echo "デプロイ開始: $(date)"
-            echo "デプロイ先パス: ${{ secrets.SERVER_DEPLOY_PATH }}"
-            
-            # デプロイ先ディレクトリの存在確認
-            if [ ! -d "${{ secrets.SERVER_DEPLOY_PATH }}" ]; then
-              echo "デプロイ先ディレクトリが存在しません。作成します。"
-              mkdir -p "${{ secrets.SERVER_DEPLOY_PATH }}"
-            fi
-            
-            # バックアップを作成
-            if [ -d "${{ secrets.SERVER_DEPLOY_PATH }}" ]; then
-              echo "バックアップを作成中..."
-              cp -r "${{ secrets.SERVER_DEPLOY_PATH }}" "${{ secrets.SERVER_DEPLOY_PATH }}_backup_$(date +%Y%m%d_%H%M%S)"
-              echo "バックアップ完了"
-            fi
-            
-            # 既存のファイルを削除（隠しファイルを除く）
-            echo "既存ファイルを削除中..."
-            find "${{ secrets.SERVER_DEPLOY_PATH }}" -type f ! -name ".*" -delete 2>/dev/null || true
-            find "${{ secrets.SERVER_DEPLOY_PATH }}" -type d ! -name "." ! -name ".." -exec rm -rf {} + 2>/dev/null || true
-            echo "ファイル削除完了"
-      
-      - name: Upload files to server
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          port: ${{ secrets.SERVER_PORT }}
-          source: "dist/*"
-          target: ${{ secrets.SERVER_DEPLOY_PATH }}
-          strip_components: 1
-      
-      - name: Set proper permissions
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          port: ${{ secrets.SERVER_PORT }}
-          script: |
-            # ファイルの権限を設定
-            chmod -R 755 "${{ secrets.SERVER_DEPLOY_PATH }}"
-            find "${{ secrets.SERVER_DEPLOY_PATH }}" -type f -exec chmod 644 {} \;
-            find "${{ secrets.SERVER_DEPLOY_PATH }}" -type d -exec chmod 755 {} \;
-            
-            # デプロイ完了の通知
-            echo "Deployment completed successfully at $(date)"
+          password: ${{ secrets.SERVER_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: ${{ secrets.SERVER_DEPLOY_PATH }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.env
+            **/.DS_Store
+            **/Thumbs.db
