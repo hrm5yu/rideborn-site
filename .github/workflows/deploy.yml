@@ -39,7 +39,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           local-dir: ./dist/
-          server-dir: ${{ secrets.SERVER_DEPLOY_PATH }}
+          server-dir: ./  # お名前.comでは接続先ディレクトリが自動設定される
           exclude: |
             **/.git*
             **/.git*/**
